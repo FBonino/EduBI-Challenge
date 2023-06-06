@@ -8,10 +8,10 @@ import {
   Post,
   Delete,
 } from '@nestjs/common';
-import { ToDo, ToDoCreateInput, ToDoUpdateInput } from './todos.interface';
 import { ToDosService } from './todos.service';
+import { ToDo, ToDoCreateInput, ToDoUpdateInput } from './todos.interface';
 
-@Controller('todo')
+@Controller('todos')
 export class ToDosController {
   constructor(private todosService: ToDosService) {}
 
@@ -33,12 +33,14 @@ export class ToDosController {
     @Body() todoInput: ToDoUpdateInput,
   ): ToDo {
     const todo = this.todosService.updateByID(id, todoInput);
+
     return todo;
   }
 
   @Delete(':id')
   deleteByID(@Param('id', ParseIntPipe) id: number): ToDo {
     const todo = this.todosService.deleteByID(id);
+
     return todo;
   }
 }
