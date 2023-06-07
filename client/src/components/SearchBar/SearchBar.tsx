@@ -1,7 +1,8 @@
 import todoAPI from '../../apis/todos.api';
 import { ToDoCreateInput } from '../../types/todos.types';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, SyntheticEvent } from 'react';
 import { ToDoItem } from '../../types/todos.types';
+import style from './SearchBar.module.css';
 
 type Params = {
   todos: ToDoItem[];
@@ -14,10 +15,22 @@ const SearchBar = ({ todos, setTodos }: Params) => {
     setTodos([...todos, newToDo]);
   };
 
+  const filterToDos = (event: SyntheticEvent) => {
+    event.preventDefault();
+  };
+
   return (
-    <div>
-      <input />
-      <button onClick={() => createToDo({ title: 'test2' })}> + </button>
+    <div className={style.container}>
+      <form className={style.form} onSubmit={filterToDos}>
+        <input className={style.search} type="submit" value="🔍" />
+        <input className={style.input} placeholder="Filter..." />
+      </form>
+      <button
+        className={style.add}
+        onClick={() => createToDo({ title: 'test2' })}
+      >
+        New
+      </button>
     </div>
   );
 };

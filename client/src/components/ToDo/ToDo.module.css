@@ -1,9 +1,17 @@
 .container {
   display: flex;
-  flex-direction: column;
-  width: 20rem;
-  border: 1px solid black;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  border: 1px solid grey;
   border-radius: 0.25rem;
+  display: flex;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+}
+
+.container + .container {
+  margin-top: 0.1rem;
 }
 
 .buttons {
@@ -30,10 +38,15 @@
   margin-left: 0.25rem;
 }
 
-.content {
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 0.5rem;
+.title {
+  border: 1px solid grey;
+}
+
+.title:disabled {
+  background-color: transparent;
+  border: 1px solid grey;
+}
+
+.done {
+  cursor: pointer;
 }

@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.titles {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 45% auto auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  border-bottom: 1px solid black;
+  margin-bottom: 0.25rem;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.todos {
+  padding: 0.25rem 0.75rem;
+  overflow-y: scroll;
+}
+
+.todos::-webkit-scrollbar {
+  background-color: lightgray;
+  border-radius: 1rem;
+  width: 0.4rem;
+}
+
+.todos::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  border-radius: 1rem;
+}

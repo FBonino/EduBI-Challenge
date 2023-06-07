@@ -22,9 +22,20 @@ const ToDos = ({ todos, setTodos }: Params) => {
 
   return (
     <div className={style.container}>
-      <div className={style.list}>
-        {todos.map(({ id, title, done }: ToDoItem) => (
-          <ToDo key={id} id={id} title={title} done={done} />
+      <div className={style.titles}>
+        <p className={style.title}> ID </p>
+        <p className={style.title}> Title </p>
+        <p className={style.title}> Done </p>
+        <p className={style.title}> Edit / Delete </p>
+      </div>
+      <div className={style.todos}>
+        {todos.map((todo: ToDoItem) => (
+          <ToDo
+            key={todo.id}
+            todo={todo}
+            updateToDo={updateToDo}
+            deleteToDo={deleteToDo}
+          />
         ))}
       </div>
     </div>
