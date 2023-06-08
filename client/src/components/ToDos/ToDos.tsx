@@ -1,8 +1,9 @@
 import ToDo from '../ToDo/ToDo';
 import style from './ToDos.module.css';
-import { Dispatch, SetStateAction } from 'react';
-import { ToDoItem, ToDoUpdateInput } from '../../types/todos.types';
 import todoAPI from '../../apis/todos.api';
+import { Dispatch, SetStateAction } from 'react';
+import { ToDoItem } from '../../types/todos.types';
+import { UpdateToDoDTO } from '../../dtos/todos.dtos';
 
 type Params = {
   todos: ToDoItem[];
@@ -10,14 +11,14 @@ type Params = {
 };
 
 const ToDos = ({ todos, setTodos }: Params) => {
-  const updateToDo = async (id: number, input: ToDoUpdateInput) => {
+  const updateToDo = async (id: number, input: UpdateToDoDTO) => {
     const updatedToDo = await todoAPI.update(id, input);
     setTodos(todos.map((todo) => (todo.id === id ? updatedToDo : todo)));
   };
 
   const deleteToDo = async (id: number) => {
-    const deletedToDo = await todoAPI.delete(id);
-    setTodos(todos.filter((todo) => todo.id !== deletedToDo.id));
+    await todoAPI.delete(id);
+    setTodos(todos.filter((todo) => todo.id !== id));
   };
 
   return (

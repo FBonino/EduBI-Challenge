@@ -1,17 +1,24 @@
 .container {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  flex-direction: column;
   width: 100%;
   border: 1px solid grey;
   border-radius: 0.25rem;
   display: flex;
-  padding: 0 0.5rem;
   box-sizing: border-box;
 }
 
 .container + .container {
   margin-top: 0.1rem;
+}
+
+.basic {
+  padding: 0 0.5rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .buttons {
@@ -49,4 +56,33 @@
 
 .done {
   cursor: pointer;
+}
+
+.focused {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.description {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 1rem;
+}
+
+.description>textarea {
+  resize: none;
+}
+
+.more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+  border-top: 1px solid lightgrey;
 }

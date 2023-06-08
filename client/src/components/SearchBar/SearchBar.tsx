@@ -1,8 +1,9 @@
 import todoAPI from '../../apis/todos.api';
-import { ToDoCreateInput } from '../../types/todos.types';
-import { Dispatch, SetStateAction, SyntheticEvent } from 'react';
-import { ToDoItem } from '../../types/todos.types';
 import style from './SearchBar.module.css';
+import { ToDoItem } from '../../types/todos.types';
+import { CreateToDoDTO } from '../../dtos/todos.dtos';
+import { Dispatch, SetStateAction, SyntheticEvent, useState } from 'react';
+import CreateToDoModal from '../CreateToDoModal/CreateToDoModal';
 
 type Params = {
   todos: ToDoItem[];
@@ -10,7 +11,13 @@ type Params = {
 };
 
 const SearchBar = ({ todos, setTodos }: Params) => {
-  const createToDo = async (input: ToDoCreateInput) => {
+  const [showModal, setShowModal] = useState(false);
+  const [newToDo, setNewToDo] = useState<CreateToDoDTO>({
+    title: '',
+    description: '',
+  });
+
+  const createToDo = async (input: CreateToDoDTO) => {
     const newToDo = await todoAPI.create(input);
     setTodos([...todos, newToDo]);
   };
@@ -25,12 +32,17 @@ const SearchBar = ({ todos, setTodos }: Params) => {
         <input className={style.search} type="submit" value="🔍" />
         <input className={style.input} placeholder="Filter..." />
       </form>
-      <button
-        className={style.add}
-        onClick={() => createToDo({ title: 'test2' })}
-      >
+      <button className={style.add} onClick={() => setShowModal(true)}>
         New
       </button>
+      {showModal && (
+        <CreateToDoModal
+          handleClose={() => setShowModal(false)}
+          newToDo={newToDo}
+          setNewToDo={setNewToDo}
+          createToDo={createToDo}
+        />
+      )}
     </div>
   );
 };

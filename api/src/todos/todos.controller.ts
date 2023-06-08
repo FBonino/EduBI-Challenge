@@ -9,38 +9,32 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ToDosService } from './todos.service';
-import { ToDo, ToDoCreateInput, ToDoUpdateInput } from './todos.interface';
+import { CreateToDoDTO, UpdateToDoDTO } from './todos.dtos';
 
 @Controller('todos')
 export class ToDosController {
   constructor(private todosService: ToDosService) {}
 
   @Get()
-  findAll(): ToDo[] {
+  findAll() {
     return this.todosService.findAll();
   }
 
   @Post()
-  create(@Body() todoInput: ToDoCreateInput): ToDo {
-    const newToDo: ToDo = this.todosService.create(todoInput);
-
-    return newToDo;
+  create(@Body() createToDoDTO: CreateToDoDTO) {
+    return this.todosService.create(createToDoDTO);
   }
 
   @Patch(':id')
   updateByID(
     @Param('id', ParseIntPipe) id: number,
-    @Body() todoInput: ToDoUpdateInput,
-  ): ToDo {
-    const todo = this.todosService.updateByID(id, todoInput);
-
-    return todo;
+    @Body() updateToDoDTO: UpdateToDoDTO,
+  ) {
+    return this.todosService.updateByID(id, updateToDoDTO);
   }
 
   @Delete(':id')
-  deleteByID(@Param('id', ParseIntPipe) id: number): ToDo {
-    const todo = this.todosService.deleteByID(id);
-
-    return todo;
+  deleteByID(@Param('id', ParseIntPipe) id: number) {
+    return this.todosService.deleteByID(id);
   }
 }

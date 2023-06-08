@@ -1,9 +1,6 @@
 import api from '.';
-import {
-  ToDoItem,
-  ToDoCreateInput,
-  ToDoUpdateInput,
-} from '../types/todos.types';
+import { ToDoItem } from '../types/todos.types';
+import { CreateToDoDTO, UpdateToDoDTO } from '../dtos/todos.dtos';
 
 const todoAPI = {
   findAll: async () => {
@@ -14,7 +11,7 @@ const todoAPI = {
 
     return allToDos;
   },
-  create: async (input: ToDoCreateInput) => {
+  create: async (input: CreateToDoDTO) => {
     const { data: newToDo } = await api.request<ToDoItem>({
       url: '/todos',
       method: 'POST',
@@ -23,7 +20,7 @@ const todoAPI = {
 
     return newToDo;
   },
-  update: async (id: number, input: ToDoUpdateInput) => {
+  update: async (id: number, input: UpdateToDoDTO) => {
     const { data: updatedToDo } = await api.request<ToDoItem>({
       url: `/todos/${id}`,
       method: 'PATCH',
