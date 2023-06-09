@@ -1,30 +1,7 @@
-import todoAPI from '../apis/todos.api';
-import { useState, useEffect } from 'react';
-import ToDos from '../components/ToDos/ToDos';
-import Loader from '../components/Loader/Loader';
-import SearchBar from '../components/SearchBar/SearchBar';
-import { ToDoItem } from '../types/todos.types';
-import style from './HomePage.module.css';
+import HomeLayout from '../layouts/HomeLayout/HomeLayout';
 
 const HomePage = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [todos, setTodos] = useState<ToDoItem[]>([]);
-
-  useEffect(() => {
-    setIsLoading(true);
-    todoAPI.findAll().then((allToDos) => {
-      setTodos(allToDos);
-      setIsLoading(false);
-    });
-  }, []);
-
-  return (
-    <div className={style.container}>
-      <h1> EduBI Challenge </h1>
-      <SearchBar todos={todos} setTodos={setTodos} />
-      {isLoading ? <Loader /> : <ToDos todos={todos} setTodos={setTodos} />}
-    </div>
-  );
+  return <HomeLayout />;
 };
 
 export default HomePage;

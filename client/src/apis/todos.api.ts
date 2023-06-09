@@ -23,19 +23,19 @@ const todoAPI = {
   update: async (id: number, input: UpdateToDoDTO) => {
     const { data: updatedToDo } = await api.request<ToDoItem>({
       url: `/todos/${id}`,
-      method: 'PATCH',
+      method: 'PUT',
       data: input,
     });
 
     return updatedToDo;
   },
   delete: async (id: number) => {
-    const { data: deletedToDo } = await api.request<ToDoItem>({
+    const { data } = await api.request({
       url: `/todos/${id}`,
       method: 'DELETE',
     });
 
-    return deletedToDo;
+    return !!data.affected;
   },
 };
 

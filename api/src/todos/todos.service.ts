@@ -11,7 +11,7 @@ export class ToDosService {
   ) {}
 
   findAll() {
-    return this.todoRepository.find();
+    return this.todoRepository.find({ order: { id: 'ASC' } });
   }
 
   create(createToDoDTO: CreateToDoDTO) {

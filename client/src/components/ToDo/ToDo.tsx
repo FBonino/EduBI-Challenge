@@ -1,10 +1,10 @@
 import Swal from 'sweetalert2';
-import { useState } from 'react';
 import style from './ToDo.module.css';
-import { MdExpandMore } from 'react-icons/md';
 import { ToDoItem } from '../../types/todos.types';
 import { UpdateToDoDTO } from '../../dtos/todos.dtos';
+import useBooleanState from '../../hooks/useBooleanState';
 import { AiFillEdit, AiFillDelete, AiFillSave } from 'react-icons/ai';
+import { useState, ChangeEvent } from 'react';
 
 type Params = {
   todo: ToDoItem;
@@ -13,8 +13,22 @@ type Params = {
 };
 
 const ToDo = ({ todo, updateToDo, deleteToDo }: Params) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
+  const [isEditing, setIsEditing, setIsNotEditing] = useBooleanState();
+  const [isFocused, setIsFocused, setIsNotFocused] = useBooleanState();
+  const [state, setState] = useState({
+    title: todo.title,
+    description: todo.description,
+    done: todo.done,
+  });
+
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setState({
+      ...state,
+      [event.target.name]: event.target.value,
+    });
+  };
 
   const onDelete = () => {
     Swal.fire({
@@ -24,35 +38,46 @@ const ToDo = ({ todo, updateToDo, deleteToDo }: Params) => {
       showCancelButton: true,
       confirmButtonText: 'Delete',
       reverseButtons: true,
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        deleteToDo(todo.id);
+        await deleteToDo(todo.id);
       }
     });
   };
 
-  const onUpdate = () => {
+  const onUpdate = async () => {
     if (!isEditing) {
-      setIsEditing(true);
+      setIsEditing();
     } else {
-      setIsEditing(false);
+      await updateToDo(todo.id, state);
+      setIsNotEditing();
     }
   };
 
   return (
-    <div className={style.container}>
-      <div className={style.basic} onClick={() => setIsFocused(false)}>
+    <div
+      className={style.container}
+      onMouseEnter={setIsFocused}
+      onMouseLeave={() => setTimeout(setIsNotFocused, 100)}
+    >
+      <div className={style.basic}>
         <p className={style.id}> {todo.id} </p>
         <input
           className={style.title}
-          value={todo.title}
+          name="title"
+          value={state.title}
+          onChange={handleChange}
           disabled={!isEditing}
         />
         <input
           className={style.done}
+          name="done"
           type="checkbox"
-          checked={todo.done}
-          onChange={() => updateToDo(todo.id, { done: !todo.done })}
+          checked={state.done}
+          onChange={({ target }) =>
+            setState({ ...state, [target.name]: target.checked })
+          }
+          disabled={!isEditing}
         />
         <div className={style.buttons}>
           <button className={style.button} onClick={onUpdate}>
@@ -63,23 +88,17 @@ const ToDo = ({ todo, updateToDo, deleteToDo }: Params) => {
           </button>
         </div>
       </div>
-      {/* <div className={style.focused}> */}
-      {isFocused ? (
-        <div className={style.description} onClick={() => setIsFocused(false)}>
-          <p> Description </p>
-          <textarea
-            value={todo.description}
-            disabled={!isEditing}
-            rows={5}
-            cols={30}
-          />
-        </div>
-      ) : (
-        <div className={style.more} onClick={() => setIsFocused(true)}>
-          <MdExpandMore />
-        </div>
-      )}
-      {/* </div> */}
+      <div className={isFocused ? style.description : style.hidden}>
+        <p> Description </p>
+        <textarea
+          name="description"
+          value={state.description}
+          onChange={handleChange}
+          disabled={!isEditing}
+          rows={5}
+          cols={30}
+        />
+      </div>
     </div>
   );
 };

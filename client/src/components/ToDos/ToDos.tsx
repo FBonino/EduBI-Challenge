@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import ToDo from '../ToDo/ToDo';
 import style from './ToDos.module.css';
 import todoAPI from '../../apis/todos.api';
@@ -11,14 +12,23 @@ type Params = {
 };
 
 const ToDos = ({ todos, setTodos }: Params) => {
-  const updateToDo = async (id: number, input: UpdateToDoDTO) => {
-    const updatedToDo = await todoAPI.update(id, input);
+  const updateToDo = async (id: number, updateToDoDTO: UpdateToDoDTO) => {
+    const updatedToDo = await todoAPI.update(id, updateToDoDTO);
     setTodos(todos.map((todo) => (todo.id === id ? updatedToDo : todo)));
   };
 
   const deleteToDo = async (id: number) => {
-    await todoAPI.delete(id);
-    setTodos(todos.filter((todo) => todo.id !== id));
+    const isDeleted = await todoAPI.delete(id);
+    if (isDeleted) {
+      setTodos(todos.filter((todo) => todo.id !== id));
+    } else {
+      Swal.fire({
+        title: 'Error',
+        text: "ToDo couldn't be deleted",
+        icon: 'error',
+        timer: 5000,
+      });
+    }
   };
 
   return (

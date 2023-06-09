@@ -4,13 +4,13 @@
   width: 100%;
   padding: 1rem;
   box-sizing: border-box;
-  overflow: hidden;
+  height: 95%;
 }
 
 .titles {
   width: 100%;
   display: grid;
-  grid-template-columns: auto 45% auto auto;
+  grid-template-columns: auto 47% auto 27%;
   padding: 0 1rem;
   box-sizing: border-box;
   border-bottom: 1px solid black;
@@ -26,15 +26,16 @@
 .todos {
   padding: 0.25rem 0.75rem;
   overflow-y: scroll;
+  height: 100%;
 }
 
 .todos::-webkit-scrollbar {
-  background-color: lightgray;
+  background-color: var(--bg-color);
   border-radius: 1rem;
   width: 0.4rem;
 }
 
 .todos::-webkit-scrollbar-thumb {
-  background-color: darkgrey;
+  background-color: var(--detail-color);
   border-radius: 1rem;
 }

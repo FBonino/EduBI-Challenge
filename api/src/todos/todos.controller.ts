@@ -4,7 +4,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  Patch,
+  Put,
   Post,
   Delete,
 } from '@nestjs/common';
@@ -25,7 +25,7 @@ export class ToDosController {
     return this.todosService.create(createToDoDTO);
   }
 
-  @Patch(':id')
+  @Put(':id')
   updateByID(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateToDoDTO: UpdateToDoDTO,

@@ -1,45 +1,62 @@
 import style from './CreateToDoModal.module.css';
 import { CreateToDoDTO } from '../../dtos/todos.dtos';
-import { Dispatch, SetStateAction, SyntheticEvent } from 'react';
+import { useState, SyntheticEvent, ChangeEvent } from 'react';
 
 type Params = {
   handleClose: () => void;
-  newToDo: CreateToDoDTO;
-  setNewToDo: Dispatch<SetStateAction<CreateToDoDTO>>;
   createToDo: (createToDoDTO: CreateToDoDTO) => void;
 };
 
-const CreateToDoModal = ({
-  handleClose,
-  newToDo,
-  setNewToDo,
-  createToDo,
-}: Params) => {
-  // const handleChange = (event: SyntheticEvent) => setNewToDo({ ...newToDo, [event.target.name]: event.target.value });
+const CreateToDoModal = ({ handleClose, createToDo }: Params) => {
+  const [newToDo, setNewToDo] = useState<CreateToDoDTO>({
+    title: '',
+    description: '',
+  });
 
-  const handleCreateToDo = (event: SyntheticEvent) => {
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setNewToDo({ ...newToDo, [event.target.name]: event.target.value });
+  };
+
+  const handleCreateToDo = async (event: SyntheticEvent) => {
     event.preventDefault();
-    createToDo(newToDo);
+    await createToDo(newToDo);
     setNewToDo({ title: '', description: '' });
+    handleClose();
   };
 
   return (
     <>
       <div className={style.background} onClick={handleClose} />
-      <form className={style.form} onSubmit={handleCreateToDo}>
-        <div>
-          <label> Title </label>
-          <input name="title" value={newToDo.title} />
+      <form
+        className={style.form}
+        onSubmit={handleCreateToDo}
+        autoComplete="off"
+      >
+        <h2 className={style.title}> New ToDo </h2>
+        <div className={style.field}>
+          <label className={style.label}> Title </label>
+          <input
+            className={style.input}
+            name="title"
+            value={newToDo.title}
+            onChange={handleChange}
+            required
+          />
         </div>
-        <div>
-          <label> Description </label>
-          <input name="description" value={newToDo.description} />
+        <div className={style.field}>
+          <label className={style.label}> Description </label>
+          <textarea
+            className={style.input}
+            name="description"
+            value={newToDo.description}
+            onChange={handleChange}
+            required
+            rows={5}
+          />
         </div>
-        <div>
-          <label> Done </label>
-          <input type="checkbox" />
-        </div>
-        <input type="submit" value="Add" />
+        <input className={style.submit} type="submit" value="Create" />
       </form>
     </>
   );
